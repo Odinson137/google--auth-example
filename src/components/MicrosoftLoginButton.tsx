@@ -20,6 +20,7 @@ const MicrosoftLoginButton: React.FC = () => {
     try {
       const response = await instance.loginPopup(loginRequest);
       if (response && response.account) {
+        // Получаем данные о пользователе из MS Graph API
         const graphResponse = await instance.acquireTokenSilent({
           scopes: ["User.Read"],
           account: response.account
@@ -31,9 +32,32 @@ const MicrosoftLoginButton: React.FC = () => {
         });
         const userData: UserProfile = await userResponse.json();
         setUserData(userData);
+
+        sendUserDataToServer(userData);
       }
     } catch (error) {
       console.error('Ошибка при получении данных о пользователе:', error);
+    }
+  };
+
+  const sendUserDataToServer = async (userData: UserProfile) => {
+    try {
+      const response = await fetch('https://localhost:7069/api/User/signin-microsoft', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Серверный ответ:', data);
+      } else {
+        console.error('Ошибка при отправке данных о пользователе на сервер:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке данных о пользователе на сервер:', error);
     }
   };
 

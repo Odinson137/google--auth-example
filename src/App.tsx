@@ -8,7 +8,18 @@ import { MsalProvider  } from "@azure/msal-react";
 import { Configuration, PublicClientApplication } from "@azure/msal-browser";
 import MicrosoftLoginButton from './components/MicrosoftLoginButton';
 
+import { useState } from 'react';
+
+interface UserData {
+  givenName: string;
+  surname: string;
+  userPrincipalName: string;
+  id: string;
+}
+
 function App() {
+
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   const configuration: Configuration = {
     auth: {
