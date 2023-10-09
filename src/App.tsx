@@ -4,7 +4,20 @@ import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ChakraProvider } from '@chakra-ui/react';
 
+import { MsalProvider  } from "@azure/msal-react";
+import { Configuration, PublicClientApplication } from "@azure/msal-browser";
+import MicrosoftLoginButton from './components/MicrosoftLoginButton';
+
 function App() {
+
+  const configuration: Configuration = {
+    auth: {
+        clientId: "6f3a64ab-773a-4691-b7c9-e0cd0ab763bf",
+        authority: "https://login.microsoftonline.com/f279ae35-8d38-4338-a34e-902cd8bee2b1",
+        redirectUri: "http://localhost:3000",
+    }
+  };
+  const msalInstance = new PublicClientApplication(configuration);
 
   const sendRequestToServer = (credentialResponse: CredentialResponse) => {
     // Отправляем POST-запрос на сервер с данными авторизации
@@ -43,7 +56,12 @@ function App() {
             />
           </ChakraProvider>
         </GoogleOAuthProvider>
+        
         <div>Hello</div>
+        
+      <MsalProvider instance={msalInstance}>
+        <MicrosoftLoginButton />
+      </MsalProvider>
     </div>
 
   );
