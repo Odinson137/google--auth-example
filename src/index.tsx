@@ -3,19 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { ChakraProvider } from '@chakra-ui/react';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId="535136865130-874a69c1agfpvrvdhmfe27s6f0ucg2be.apps.googleusercontent.com">
-      <ChakraProvider>
-          <App />
-        </ChakraProvider>
-    </GoogleOAuthProvider>
+    <App />
   </React.StrictMode>
 );
 

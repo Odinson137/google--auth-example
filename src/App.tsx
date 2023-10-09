@@ -1,6 +1,9 @@
 import './App.css';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { ChakraProvider } from '@chakra-ui/react';
+
 function App() {
 
   const sendRequestToServer = (credentialResponse: CredentialResponse) => {
@@ -22,22 +25,27 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div>
+      <GoogleOAuthProvider clientId="535136865130-874a69c1agfpvrvdhmfe27s6f0ucg2be.apps.googleusercontent.com">
+        <ChakraProvider>
+          <GoogleLogin
+            theme="filled_black"
+            shape="pill"
+            onSuccess={credentialResponse => {
+              console.log("Good")
+              console.log(credentialResponse)
 
-      <GoogleLogin
-          theme="filled_black"
-          shape="pill"
-          onSuccess={credentialResponse => {
-            console.log("Good")
-            console.log(credentialResponse)
-
-            sendRequestToServer(credentialResponse);
-          }}
-          onError={() => {
-            console.log('Login Failed');
-          }}
-        />
+              sendRequestToServer(credentialResponse);
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+            />
+          </ChakraProvider>
+        </GoogleOAuthProvider>
+        <div>Hello</div>
     </div>
+
   );
 }
 
